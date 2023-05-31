@@ -1,10 +1,10 @@
 package com.miku.openapi.aop;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.miku.apicommon.model.entity.User;
 import com.miku.openapi.annotation.AuthCheck;
 import com.miku.openapi.common.ErrorCode;
 import com.miku.openapi.exception.BusinessException;
-import com.miku.openapi.model.entity.User;
 import com.miku.openapi.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

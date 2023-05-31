@@ -43,6 +43,11 @@ public class UserVO implements Serializable {
     private String userRole;
 
     /**
+     * 手机号
+     */
+    private String mobile;
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -52,5 +57,4 @@ public class UserVO implements Serializable {
      */
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
 }

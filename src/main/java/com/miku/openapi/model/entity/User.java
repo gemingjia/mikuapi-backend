@@ -2,9 +2,16 @@ package com.miku.openapi.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户
@@ -13,11 +20,11 @@ import java.util.Date;
  */
 @TableName(value = "user")
 @Data
-public class User implements Serializable {
+public class User implements Serializable , UserDetails {
     /**
-     * id
+     * id ：雪花算法生成
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -51,6 +58,11 @@ public class User implements Serializable {
     private String userPassword;
 
     /**
+     * 手机号
+     */
+    private String mobile;
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -68,4 +80,48 @@ public class User implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 配置用户权限
+     * @return
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<String> permissions = new ArrayList<>();
+        String temp = "ROLE_"+userRole;
+        permissions.add(temp);
+        List<SimpleGrantedAuthority> authorities =
+                permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return userPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return userAccount;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

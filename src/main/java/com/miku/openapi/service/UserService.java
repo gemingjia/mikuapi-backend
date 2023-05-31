@@ -2,7 +2,7 @@ package com.miku.openapi.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.miku.openapi.model.entity.User;
+import com.miku.apicommon.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -56,4 +56,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean userLogout(HttpServletRequest request);
+
+    /**
+     * 修改accessKey和secretKey
+     * @param request
+     * @return
+     */
+    boolean modifyAKAndSK(HttpServletRequest request);
 }

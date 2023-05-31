@@ -1,6 +1,6 @@
 package com.miku.openapi.model.dto.user;
 
-import com.miku.openapi.common.PageRequest;
+import com.miku.apicommon.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 用户查询请求
  *
- * @author miku
+ * 
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -45,6 +45,10 @@ public class UserQueryRequest extends PageRequest implements Serializable {
      */
     private String userRole;
 
+    /**
+     * 用户手机号
+     */
+    private String mobile;
     /**
      * 创建时间
      */

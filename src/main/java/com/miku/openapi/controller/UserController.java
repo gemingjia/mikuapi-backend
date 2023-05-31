@@ -3,13 +3,13 @@ package com.miku.openapi.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
+import com.miku.apicommon.model.entity.User;
 import com.miku.openapi.common.BaseResponse;
 import com.miku.openapi.common.DeleteRequest;
 import com.miku.openapi.common.ErrorCode;
 import com.miku.openapi.common.ResultUtils;
 import com.miku.openapi.exception.BusinessException;
 import com.miku.openapi.model.dto.user.*;
-import com.miku.openapi.model.entity.User;
 import com.miku.openapi.model.vo.UserVO;
 import com.miku.openapi.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -166,6 +166,18 @@ public class UserController {
     }
 
     /**
+     * 更新用户的accessKey和secretKey
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/update/ask")
+    public BaseResponse<Boolean> updateAKAndSK(HttpServletRequest request) {
+        boolean result = userService.modifyAKAndSK(request);
+        return ResultUtils.success(result);
+    }
+
+    /**
      * 根据 id 获取用户
      *
      * @param id
@@ -173,7 +185,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/get")
-    public BaseResponse<UserVO> getUserById(int id, HttpServletRequest request) {
+    public BaseResponse<UserVO> getUserById(long id, HttpServletRequest request) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

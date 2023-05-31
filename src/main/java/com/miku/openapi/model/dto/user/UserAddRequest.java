@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 用户创建请求
  *
- * @author miku
+ * 
  */
 @Data
 public class UserAddRequest implements Serializable {
@@ -41,6 +41,11 @@ public class UserAddRequest implements Serializable {
      * 密码
      */
     private String userPassword;
+
+    /**
+     * 用户手机号
+     */
+    private String mobile;
 
     private static final long serialVersionUID = 1L;
 }

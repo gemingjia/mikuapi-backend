@@ -1,7 +1,7 @@
 package com.miku.openapi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.miku.openapi.model.entity.InterfaceInfo;
+import com.miku.apicommon.model.entity.InterfaceInfo;
 
 /**
 * @author gmj23

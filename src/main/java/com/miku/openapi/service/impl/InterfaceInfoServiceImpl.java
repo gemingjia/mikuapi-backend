@@ -1,11 +1,11 @@
 package com.miku.openapi.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.miku.apicommon.model.entity.InterfaceInfo;
 import com.miku.openapi.common.ErrorCode;
 import com.miku.openapi.exception.BusinessException;
 import com.miku.openapi.exception.ThrowUtils;
 import com.miku.openapi.mapper.InterfaceInfoMapper;
-import com.miku.openapi.model.entity.InterfaceInfo;
 import com.miku.openapi.service.InterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.miku.openapi.service;
 
-import com.miku.openapi.model.entity.User;
+import com.miku.apicommon.model.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

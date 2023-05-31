@@ -50,6 +50,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (gender != null && !PostGenderEnum.getValues().contains(gender)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "性别不符合要求");
         }
+
     }
 }
 

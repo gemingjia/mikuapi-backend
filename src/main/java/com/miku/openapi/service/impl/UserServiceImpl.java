@@ -3,6 +3,7 @@ package com.miku.openapi.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.miku.openapi.common.ErrorCode;
+import com.miku.openapi.common.KeyUtils;
 import com.miku.openapi.exception.BusinessException;
 import com.miku.openapi.mapper.UserMapper;
 import com.miku.openapi.model.entity.User;
@@ -26,7 +27,7 @@ import static com.miku.openapi.constant.UserConstant.USER_LOGIN_STATE;
  */
 @Service
 @Slf4j
-public class UserServiceImpl extends ServiceImpl<UserMapper, User>
+public class UserServiceImpl extends ServiceImpl<UserMapper, com.miku.openapi.model.entity.User>
         implements UserService {
 
     @Resource
@@ -63,10 +64,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             }
             // 2. 加密
             String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
-            // 3. 插入数据
+
+            // 3. 随机分配accessKey和secretKey
+            String accessKey = KeyUtils.getAccessKey(userAccount);
+            String secretKey = KeyUtils.getSecretKey(userAccount);
+
+            // 4. 插入数据
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+//            user.setAccessKey(accessKey);
+//            user.setSecretKey(secretKey);
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
@@ -76,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+    public com.miku.apicommon.model.entity.User userLogin(String userAccount, String userPassword, HttpServletRequest request) {
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -101,6 +109,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         // 3. 记录用户的登录态
         request.getSession().setAttribute(USER_LOGIN_STATE, user);
+
         return user;
     }
 
@@ -153,6 +162,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         // 移除登录态
         request.getSession().removeAttribute(USER_LOGIN_STATE);
+        return true;
+    }
+
+    /**
+     * 修改accessKey和secretKey
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public boolean modifyAKAndSK(HttpServletRequest request) {
+        User loginUser = this.getLoginUser(request);
+        String userAccount = loginUser.getUserAccount();
+        // 分配accessKey和secretKey
+        String accessKey = KeyUtils.getAccessKey(userAccount);
+        String secretKey = KeyUtils.getSecretKey(userAccount);
+//
+//        loginUser.setAccessKey(accessKey);
+//        loginUser.setSecretKey(secretKey);
+        userMapper.updateById(loginUser);
         return true;
     }
 

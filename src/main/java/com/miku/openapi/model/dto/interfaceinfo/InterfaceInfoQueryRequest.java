@@ -1,17 +1,19 @@
 package com.miku.openapi.model.dto.interfaceinfo;
 
-import com.miku.openapi.common.PageRequest;
+import com.miku.apicommon.common.PageRequest;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 查询请求
+ *
+ * @author miku
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 public class InterfaceInfoQueryRequest extends PageRequest implements Serializable {
+
     /**
      * 主键
      */
@@ -31,12 +33,10 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
      * 接口地址
      */
     private String url;
-
     /**
      * 请求参数
      */
     private String requestParams;
-
     /**
      * 请求头
      */
@@ -62,5 +62,23 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
      */
     private Long userId;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 计费规则（元/条）
+     */
+    private Double charging;
+
+    /**
+     * 接口剩余可调用次数
+     */
+    private String availablePieces;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
 }

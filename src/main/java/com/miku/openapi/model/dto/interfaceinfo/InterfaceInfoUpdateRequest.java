@@ -7,11 +7,11 @@ import java.io.Serializable;
 /**
  * 更新请求
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @TableName product
  */
 @Data
 public class InterfaceInfoUpdateRequest implements Serializable {
+
     /**
      * 主键
      */
@@ -57,5 +57,14 @@ public class InterfaceInfoUpdateRequest implements Serializable {
      */
     private String method;
 
+    /**
+     * 计费规则（元/条）
+     */
+    private Double charging;
+
+    /**
+     * 接口剩余可调用次数
+     */
+    private String availablePieces;
     private static final long serialVersionUID = 1L;
 }

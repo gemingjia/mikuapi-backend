@@ -2,20 +2,20 @@ package com.miku.openapi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.miku.apiclientsdk.client.MikuApiClient;
+import com.miku.apiclientsdk.model.Users;
+import com.miku.apicommon.model.entity.InterfaceInfo;
+import com.miku.apicommon.model.entity.User;
+import com.miku.apicommon.model.enums.InterfaceInfoStatusEnum;
 import com.miku.openapi.annotation.AuthCheck;
-import com.miku.openapi.common.BaseResponse;
-import com.miku.openapi.common.DeleteRequest;
-import com.miku.openapi.common.ErrorCode;
-import com.miku.openapi.common.ResultUtils;
+import com.miku.openapi.common.*;
 import com.miku.openapi.constant.CommonConstant;
 import com.miku.openapi.exception.BusinessException;
 import com.miku.openapi.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.miku.openapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.miku.openapi.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
-import com.miku.openapi.model.entity.User;
 import com.miku.openapi.service.InterfaceInfoService;
 import com.miku.openapi.service.UserService;
-import com.miku.openapi.model.entity.InterfaceInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 帖子接口
+ * 接口信息
  *
  * @author miku
  */
@@ -40,6 +40,9 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private MikuApiClient mikuApiClient;
 
     // region 增删改查
 
@@ -98,7 +101,7 @@ public class InterfaceInfoController {
     }
 
     /**
-     * 更新
+     * 更新接口信息
      *
      * @param interfaceInfoUpdateRequest
      * @param request
@@ -106,7 +109,7 @@ public class InterfaceInfoController {
      */
     @PostMapping("/update")
     public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest,
-                                            HttpServletRequest request) {
+                                                     HttpServletRequest request) {
         if (interfaceInfoUpdateRequest == null || interfaceInfoUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -197,4 +200,106 @@ public class InterfaceInfoController {
 
     // endregion
 
+    /**
+     * 上线接口
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @AuthCheck(mustRole = "admin")
+    @PostMapping("/online")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest, HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long id = idRequest.getId();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 判断接口是否可以调用
+        Users users = new Users();
+        users.setName("miku");
+        String nameByJson = mikuApiClient.getNameByJson(users);
+        if (StringUtils.isBlank(nameByJson)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口验证失败！");
+        }
+        // 更新接口状态
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        BeanUtils.copyProperties(idRequest, interfaceInfo);
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 下线接口
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @AuthCheck(mustRole = "admin")
+    @PostMapping("/offline")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest, HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long id = idRequest.getId();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 更新接口状态
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        BeanUtils.copyProperties(idRequest, interfaceInfo);
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+
+        return ResultUtils.success(result);
+    }
+
+//    /**
+//     * 测试调用接口
+//     *
+//     * @param interfaceInfoInvokeRequest
+//     * @param request
+//     * @return
+//     */
+//    @PostMapping("/invoke")
+//    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
+//                                                    HttpServletRequest request) {
+//        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        Long id = interfaceInfoInvokeRequest.getId();
+//        String requestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+//        System.out.println("requestParams: " + id + " " + requestParams);
+//        // 判断是否存在
+//        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+//        if (oldInterfaceInfo == null) {
+//            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+//        }
+//        if (oldInterfaceInfo.getStatus() != InterfaceInfoStatusEnum.ONLINE.getValue()) {
+//            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口未开放！");
+//        }
+//        // 判断接口是否可以调用
+//        System.out.println("判断接口是否可以调用：");
+//        User loginUser = userService.getLoginUser(request);
+//        String accessKey = loginUser.getAccessKey();
+//        String secretKey = loginUser.getSecretKey();
+//        MikuApiClient tempClient = new MikuApiClient(accessKey, secretKey);
+//        Gson gson = new Gson();
+//        Users fromJson = gson.fromJson(requestParams, Users.class);
+//        System.out.println("fromJson: " + fromJson);
+//        Object returnObject = tempClient.getNameByJson(fromJson);
+//
+//        return ResultUtils.success(returnObject);
+//    }
 }

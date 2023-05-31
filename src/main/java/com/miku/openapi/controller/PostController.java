@@ -2,6 +2,7 @@ package com.miku.openapi.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.miku.apicommon.model.entity.User;
 import com.miku.openapi.annotation.AuthCheck;
 import com.miku.openapi.common.BaseResponse;
 import com.miku.openapi.common.DeleteRequest;
@@ -13,7 +14,6 @@ import com.miku.openapi.model.dto.post.PostAddRequest;
 import com.miku.openapi.model.dto.post.PostQueryRequest;
 import com.miku.openapi.model.dto.post.PostUpdateRequest;
 import com.miku.openapi.model.entity.Post;
-import com.miku.openapi.model.entity.User;
 import com.miku.openapi.service.PostService;
 import com.miku.openapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;

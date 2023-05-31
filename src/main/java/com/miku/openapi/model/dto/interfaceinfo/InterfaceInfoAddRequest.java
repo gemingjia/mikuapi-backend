@@ -5,7 +5,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 接口信息创建请求
+ * 创建请求
+ *
+ * @TableName product
  */
 @Data
 public class InterfaceInfoAddRequest implements Serializable {
@@ -45,4 +47,13 @@ public class InterfaceInfoAddRequest implements Serializable {
      */
     private String method;
 
+    /**
+     * 计费规则（元/条）
+     */
+    private Double charging;
+
+    /**
+     * 接口剩余可调用次数
+     */
+    private String availablePieces;
 }
