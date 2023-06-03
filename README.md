@@ -2,7 +2,7 @@
 
 ## 平台功能
 
-1.后端采用springboot框架，Mybatis Plus做数据层操作，数据库使用MySQL
+1.后端采用SpringBoot框架，Mybatis Plus做数据层操作，数据库使用MySQL
 
 2.Spring Cloud Gateway做统一网关，主要实现了白名单、api调用鉴权、 日志打印
 
