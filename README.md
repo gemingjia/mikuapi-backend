@@ -1,28 +1,20 @@
-# SpringBoot 项目初始模板
+# MIKU API开放平台
 
-> by [程序员鱼皮知识星球](https://yupi.icu)
+## 平台功能
+1.后端采用springboot框架，Mybatis Plus做数据层操作，数据库使用MySQL
+2.Spring Cloud Gateway做统一网关，主要实现了白名单、api调用鉴权、 日志打印
+3.使用Feign作为系统间 RPC 调用，使用 Nacos 作为注册中心
+4.自定义SpringBoot starter，自动配置ApiClient sdk，封装了调用API接口的功能
+5.设计 API 签名认证算法，为用户分配唯一 ak / sk 以鉴权，保障调用的安全性、可溯源性（指便于统计接口调用次数）。
 
-Java SpringBoot 项目初始模板，整合了常用框架和示例代码，大家可以在此基础上快速开发自己的项目。
-
-## 模板功能
-
-- Spring Boot 2.7.0（贼新）
-- Spring MVC
-- MySQL 驱动
-- MyBatis
-- MyBatis Plus
-- Spring Session Redis 分布式登录
-- Spring AOP
-- Apache Commons Lang3 工具类
-- Lombok 注解
-- Swagger + Knife4j 接口文档
-- Spring Boot 调试工具和项目处理器
-- 全局请求响应拦截器（记录日志）
-- 全局异常处理器
-- 自定义错误码
-- 封装通用响应类
-- 示例用户注册、登录、搜索功能
-- 示例单元测试类
-- 示例 SQL（用户表）
-
-访问 localhost:7529/api/doc.html 就能在线调试接口了，不需要前端配合啦~
+----
+## 技术栈
+●Spring Boot
+●MySQL 数据库
+●MyBatis-Plus 及 MyBatis X 自动生成
+●API 签名认证（Http 调用）
+●Spring Boot Starter（SDK 开发）
+●Dubbo 分布式（RPC、Nacos）
+●Swagger + Knife4j 接口文档生成
+●Spring Cloud Gateway 微服务网关
+●Hutool、Apache Common Utils、Gson 等
