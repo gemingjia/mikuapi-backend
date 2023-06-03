@@ -15,20 +15,20 @@
 
 ----
 ## 技术栈
-●Spring Boot
+● Spring Boot
 
-●MySQL 数据库
+● MySQL 数据库
 
-●MyBatis-Plus 及 MyBatis X 自动生成
+● MyBatis-Plus 及 MyBatis X 自动生成
 
-●API 签名认证（Http 调用）
+● API 签名认证（Http 调用）
 
-●Spring Boot Starter（SDK 开发）
+● Spring Boot Starter（SDK 开发）
 
-●Dubbo 分布式（RPC、Nacos）
+● Dubbo 分布式（RPC、Nacos）
 
-●Swagger + Knife4j 接口文档生成
+● Swagger + Knife4j 接口文档生成
 
-●Spring Cloud Gateway 微服务网关
+● Spring Cloud Gateway 微服务网关
 
-●Hutool、Apache Common Utils、Gson 等
+● Hutool、Apache Common Utils、Gson 等
